@@ -1,0 +1,79 @@
+#ifndef _CATCH_LINE_
+#define _CATCH_LINE_
+#include "HardwareInfo.c"
+#include "line_time.c"
+#include "goline.c"
+#include <SetInBeep.h>
+#include <SetWaitForTime.h>
+#include "speed_control.c"
+
+void catch_line(int sp, int light_w, double stop_time)
+{
+    // extern global var
+    extern unsigned int S1;
+    extern unsigned int S2;
+    extern unsigned int S3;
+    extern unsigned int S4;
+    extern unsigned int S5;
+    extern long light_ws;
+
+    line_time(sp, 200);
+    if ( light_w==15 )
+    {
+        while (1)
+        {
+            goline(sp);
+            if ( S1&&S5 )
+            {
+                break;
+            }
+        }
+    }
+    else
+    {
+        if ( light_w==1 )
+        {
+            while (1)
+            {
+                goline(sp);
+                if ( S1 )
+                {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            if ( light_w==5 )
+            {
+                while (1)
+                {
+                    goline(sp);
+                    if ( S5 )
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                while (1)
+                {
+                    goline(sp);
+                    if ( S5||S5 )
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    SetInBeep(ON);
+    SetWaitForTime(0.05);
+    SetInBeep(OFF);
+    speed_control(50, 50);
+    SetWaitForTime(stop_time);
+    speed_control(0, 0);
+}
+#endif
+
